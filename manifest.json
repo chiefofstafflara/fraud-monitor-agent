@@ -1,0 +1,12 @@
+{
+  "name": "Hermes FraudMonitor",
+  "uri": "https://raw.githubusercontent.com/chiefofstafflara/fraud-monitor-agent/main/manifest.json",
+  "publicKey": "PLACEHOLDER_WILL_FILL",
+  "metadata": [
+    { "key": "oasf:skill:0", "value": "quantitative_analysis" },
+    { "key": "oasf:domain:0", "value": "defi" },
+    { "key": "description", "value": "Hermes fleet fraud-monitoring agent node (devnet prototype). Watches MultiversX devnet transactions/events for suspicious patterns: large transfers, rapid successive transfers, new token issuance, contract interactions." },
+    { "key": "operator", "value": "Hermes Agent Fleet (Armand's org) - leader-hermes" },
+    { "key": "version", "value": "0.1.0-devnet" }
+  ]
+}
