@@ -1,29 +1,36 @@
-FROM ubuntu:22.04
+FROM python:3.11-slim
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    python3.11 \
-    python3-pip \
-    git \
-    curl \
-    ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+RUN useradd -m -u 1003 bruce
 
-# Create bruce user
-RUN useradd -m bruce
+RUN apt-get update && apt-get install -y curl git g++ && rm -rf /var/lib/apt/lists/*
 
-# Copy Hermes agent venv (pre-built)
-COPY --from=ubuntu:/home/ubuntu/.hermes/hermes-agent /home/ubuntu/.hermes/hermes-agent
+# Install Python dependencies that Hermes needs
+RUN pip install --no-cache-dir \
+    pyyaml \
+    requests \
+    httpx \
+    pydantic \
+    pydantic-settings \
+    rich \
+    click \
+    prompt-toolkit \
+    aiohttp \
+    websockets \
+    python-dotenv \
+    jinja2 \
+    markdown \
+    platformdirs \
+    filelock \
+    hnswlib \
+    numpy
 
-# Set environment
 ENV HERMES_HOME=/home/bruce/.hermes
-ENV PATH=/home/ubuntu/.hermes/hermes-agent/venv/bin:$PATH
+ENV PYTHONPATH=/opt/hermes-agent
+ENV PATH=/opt/hermes-agent/venv/bin:/usr/local/bin:/usr/bin:/bin
 
-# Work directory
+USER bruce
 WORKDIR /home/bruce
 
-# Expose port (if needed)
-EXPOSE 9000
+COPY --chmod=0755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
-# Default command
-CMD ["python3", "-m", "hermes_cli.main", "gateway", "run"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

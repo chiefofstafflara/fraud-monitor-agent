@@ -1,20 +1,20 @@
-version: '3.8'
-
 services:
   bruce:
     build:
       context: .
       dockerfile: Dockerfile.bruce
+    image: bruce-gateway
     container_name: hermes-gateway-bruce
     restart: unless-stopped
     networks:
       - hermes-network
 
-    # Persistent volumes
+    # Volumes
     volumes:
       - bruce-home:/home/bruce
-      - shared-vault:/home/shared/obsidian-vault:ro
-      - ops-logs:/home/ubuntu/ops-logs
+      - /home/ubuntu/.hermes/hermes-agent:/opt/hermes-agent:ro
+      - /home/shared/obsidian-vault:/home/shared/obsidian-vault:ro
+      - /home/ubuntu/ops-logs:/home/ubuntu/ops-logs
 
     # Environment variables
     environment:
@@ -22,6 +22,7 @@ services:
       - PLATFORM=telegram
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
       - TELEGRAM_ALLOWED_CHATS=${TELEGRAM_ALLOWED_CHATS}
+      - PYTHONPATH=/opt/hermes-agent
 
     # Resource limits
     deploy:
@@ -34,12 +35,6 @@ services:
 # Named volumes
 volumes:
   bruce-home:
-  shared-vault:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/shared/obsidian-vault
   ops-logs:
     driver: local
     driver_opts:
