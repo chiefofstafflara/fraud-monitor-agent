@@ -1,9 +1,9 @@
-# MVX Ecosystem Growth Fund Grant Proposal — Hermes FraudMonitor
+# MultiversX Growth Games (Build Grant Tier) — Hermes FraudMonitor
 
 **Date:** 2026-09-16  
 **Applicant:** Hermes Agent (chafofstafflara@gmail.com)  
 **Project Name:** Hermes FraudMonitor  
-**Target:** MultiversX Ecosystem Growth Fund (formerly Growth Games)  
+**Category:** ✅ AI Agent  
 **Current Status:** ✅ Devnet Alpha Complete (NFT Registered, Monitoring Live)
 
 ---
@@ -67,27 +67,25 @@ A decentralized, autonomous monitoring node (Hermes FraudMonitor) that:
 
 ## 5. Milestones & Deliverables
 
-| ID | Phase | Deliverable | Timeline |
-|----|-------|-------------|----------|
-| **M1** | **Mainnet Launch** | Deploy FraudMonitor to MX-8004 Mainnet; Mint NFT. | Month 1 |
-| **M2** | **API v1** | Public endpoint: `/api/risk/{address}` and `/api/scan`. | Month 2 |
-| **M3** | **Dashboard Enhancement** | Add historical charts, risk scoring, and CSV export. | Month 2 |
-| **M4** | **Integration SDK** | npm/JS SDK for dApps to call the monitor directly. | Month 3 |
-| **M5** | **Audit & Documentation** | Publish whitepaper and invite independent code review. | Month 3 |
+| ID | Phase | Deliverable | Milestone Payment |
+|----|-------|-------------|-------------------|
+| **M1** | **MVP (Month 1)** | Devnet live, GitHub public, API v0 | 25% of grant |
+| **M2** | **Mainnet Beta (Month 2)** | Full monitoring, API v1, Dashboard | 35% of grant |
+| **M3** | **Production (Month 3)** | Dashboard v2, 2 dApp integrations | 40% of grant |
 
 ---
 
 ## 6. Budget Request
 
-**Total Requested:** ~5,000 EGLD (or USD equivalent)
+**Total Requested:** $47,000 USD
 
-| Category | Cost | Details |
-|----------|------|---------|
-| **Devnet Gas Fees** | 5 EGLD | Testing transactions, metadata updates. |
-| **Mainnet Gas Fees** | 10 EGLD | Initial registration, deployment. |
-| **Development Time** | 4,500 EGLD | 3 months (Core dev + API + Docs). |
-| **Server/Hosting** | 485 EGLD | 12 months VPS for API & dashboard (AWS/DigitalOcean). |
-| **Total** | **5,000 EGLD** | |
+| Category | Cost (USD) | Details |
+|----------|------------|---------|
+| **Mainnet Deployment** | $5,000 | Gas fees, registration, metadata updates |
+| **Server/Hosting** | $4,000 | 12 months VPS for API & dashboard (AWS/DigitalOcean) |
+| **Development** | $35,000 | 3 months (Lead dev + AI engineer) |
+| **Marketing/Community** | $3,000 | Twitter/X content, AMAs, community building |
+| **Total** | **$47,000** | ≈ 13.5K EGLD |
 
 *Note: We are already covering initial devnet costs out of pocket. Grant funds will be directed primarily to Mainnet deployment and long-term sustainability.*
 
@@ -98,6 +96,7 @@ A decentralized, autonomous monitoring node (Hermes FraudMonitor) that:
 **Lead Architect:** Armand (Hermes Agent)
 - **Experience:** Autonomous agent architecture, blockchain development, security tooling.
 - **Track Record:** Deployed 9+ AI agents on local cloud infra; built fraud analytics pipeline on MVX devnet.
+- **GitHub:** https://github.com/chiefofstafflara
 - **Contact:** chiefofstafflara@gmail.com
 
 ---
