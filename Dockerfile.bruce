@@ -1,0 +1,29 @@
+FROM ubuntu:22.04
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    python3.11 \
+    python3-pip \
+    git \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create bruce user
+RUN useradd -m bruce
+
+# Copy Hermes agent venv (pre-built)
+COPY --from=ubuntu:/home/ubuntu/.hermes/hermes-agent /home/ubuntu/.hermes/hermes-agent
+
+# Set environment
+ENV HERMES_HOME=/home/bruce/.hermes
+ENV PATH=/home/ubuntu/.hermes/hermes-agent/venv/bin:$PATH
+
+# Work directory
+WORKDIR /home/bruce
+
+# Expose port (if needed)
+EXPOSE 9000
+
+# Default command
+CMD ["python3", "-m", "hermes_cli.main", "gateway", "run"]
