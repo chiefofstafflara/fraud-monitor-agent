@@ -1,12 +1,14 @@
 {
   "name": "Hermes FraudMonitor",
-  "uri": "https://raw.githubusercontent.com/chiefofstafflara/fraud-monitor-agent/main/manifest.json",
-  "publicKey": "PLACEHOLDER_WILL_FILL",
+  "description": "Autonomous AI agent for real-time on-chain fraud detection on MultiversX. Scans devnet transactions for suspicious patterns: large transfers (≥1000 EGLD), rapid successive transfers (≥5 txns per sender), and new agent registrations on the MX-8004 Identity Registry. Built for the MultiversX Growth Games Build Grant.",
+  "publicKey": "d0d931182658a0abbd826cd458be2066d01cb42d67917d0a99f1cd5f5fbec266",
   "metadata": [
+    { "key": "version", "value": "0.1.0-devnet" },
+    { "key": "operator", "value": "Armand (Musashi Warrior)" },
+    { "key": "repo", "value": "github.com/chiefofstafflara/fraud-monitor-agent" },
+    { "key": "grant", "value": "MultiversX Growth Games — Build Tier" },
+    { "key": "network", "value": "devnet" },
     { "key": "oasf:skill:0", "value": "quantitative_analysis" },
-    { "key": "oasf:domain:0", "value": "defi" },
-    { "key": "description", "value": "Hermes fleet fraud-monitoring agent node (devnet prototype). Watches MultiversX devnet transactions/events for suspicious patterns: large transfers, rapid successive transfers, new token issuance, contract interactions." },
-    { "key": "operator", "value": "Hermes Agent Fleet (Armand's org) - leader-hermes" },
-    { "key": "version", "value": "0.1.0-devnet" }
+    { "key": "oasf:domain:0", "value": "defi_security" }
   ]
 }
