@@ -8,7 +8,7 @@
 // Run: node monitor.js [--once]
 const API = 'https://devnet-api.multiversx.com';
 const IDENTITY = 'erd1qqqqqqqqqqqqqpgqxyum8w6cn6xkz9q5rsy4mfcsw3njpd6cd8ssr4quyy';
-const LOG = '/home/ubuntu/mvx-prep/step7/findings.log';
+const LOG = '/home/ubuntu/ops-logs/monitor-findings.log';
 const LARGE_TRANSFER_LIMIT = 1000n * 10n ** 18n; // 1000 EGLD in atomic units (devnet-scale adjustable)
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || '381440594'; // Armand's DM
