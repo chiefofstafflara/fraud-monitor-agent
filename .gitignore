@@ -1,5 +1,11 @@
 .env
+*.env
+!example.env
+.env.*
+*.env.bak*
 findings.db
 findings.db-shm
 findings.db-wal
 *.log
+*.pem
+*_key.txt
