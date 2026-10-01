@@ -1,1 +1,5 @@
 .env
+findings.db
+findings.db-shm
+findings.db-wal
+*.log
