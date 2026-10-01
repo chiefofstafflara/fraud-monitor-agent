@@ -1,8 +1,8 @@
 #!/bin/bash
-# Bruce Gateway Docker Entrypoint
+# Hermes Agent Docker Entrypoint
 set -e
 
-echo "Starting Bruce Gateway..."
+echo "Starting Hermes Agent Gateway..."
 echo "PYTHONPATH=$PYTHONPATH"
 
 # Check if Hermes source is accessible

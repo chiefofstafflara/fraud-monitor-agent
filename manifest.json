@@ -1,14 +1,99 @@
 {
+  "type": "https://multiversx.com/standards/mx-8004#registration-v1",
   "name": "Hermes FraudMonitor",
-  "description": "Autonomous AI agent for real-time on-chain fraud detection on MultiversX. Scans devnet transactions for suspicious patterns: large transfers (≥1000 EGLD), rapid successive transfers (≥5 txns per sender), and new agent registrations on the MX-8004 Identity Registry. Built for the MultiversX Growth Games Build Grant.",
+  "description": "Autonomous on-chain fraud detection agent for MultiversX devnet. Continuously scans the MX-8004 agent economy and the transaction layer for integrity violations. Its headline rule (self_validated_job) detects jobs marked 'Verified' by the same address that submitted the proof — an integrity failure the public dashboard reports as affecting 100% of all verified devnet jobs. Exposes a live dashboard, a JSON findings API, and five priced services on the MX-8004 Identity Registry.",
+  "version": "1.0.0",
+  "agentId": 200,
+  "author": "Armand (Musashi Warrior), Hermes Agent Fleet",
+  "license": "MIT",
+  "repository": "https://github.com/chiefofstafflara/fraud-monitor-agent",
+  "website": "https://agents.multiversx.com/agent/200",
+
   "publicKey": "d0d931182658a0abbd826cd458be2066d01cb42d67917d0a99f1cd5f5fbec266",
+
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "autonomous": true
+  },
+
+  "endpoints": [
+    {
+      "name": "findings-api",
+      "description": "JSON API. GET /api/stats, /api/findings?limit=&rule=, /health",
+      "url": "https://api.fraudalysis.com/agents/200/stats",
+      "type": "http"
+    }
+  ],
+
+  "detectionRules": [
+    {
+      "name": "self_validated_job",
+      "severity": "high",
+      "confidence": 90,
+      "description": "A job reached 'Verified' but submit_proof and validation_response carry the same sender address, i.e. the agent owner validated their own work. Detected by comparing transaction senders across the MX-8004 Validation Registry job lifecycle."
+    },
+    {
+      "name": "new_agent",
+      "severity": "info",
+      "confidence": 100,
+      "description": "New agent registration observed on the MX-8004 Identity Registry."
+    },
+    {
+      "name": "large_transfer",
+      "severity": "high",
+      "confidence": 95,
+      "description": "EGLD transfer at or above 1000 EGLD on devnet."
+    },
+    {
+      "name": "burst_activity",
+      "severity": "medium",
+      "confidence": 70,
+      "description": "15 or more transactions from a single address inside a 60 second window."
+    }
+  ],
+
+  "services": [
+    { "service_id": 1001, "price": "10000000000000000",  "denomination": "EGLD", "description": "Transaction risk scoring" },
+    { "service_id": 1002, "price": "10000000000000000",  "denomination": "EGLD", "description": "Address reputation analysis" },
+    { "service_id": 1003, "price": "10000000000000000",  "denomination": "EGLD", "description": "AML pattern report" },
+    { "service_id": 1004, "price": "5000000000000000",   "denomination": "EGLD", "description": "Contract event feed" },
+    { "service_id": 1005, "price": "20000000000000000",  "denomination": "EGLD", "description": "Full agent economy audit" }
+  ],
+
+  "chains": [
+    {
+      "network": "devnet",
+      "protocol": "mx-8004",
+      "identityRegistry": "erd1qqqqqqqqqqqqqpgqxyum8w6cn6xkz9q5rsy4mfcsw3njpd6cd8ssr4quyy",
+      "validationRegistry": "erd1qqqqqqqqqqqqqpgqvax6z79cvyz9gkfwg57hqume352p7s7rd8ss4g3t43",
+      "agentNonce": 200
+    }
+  ],
+
+  "trustSignals": {
+    "note": "Findings are reproducible from public devnet endpoints. No job counts or self-reported metrics are claimed.",
+    "verifiable": [
+      "Every finding stores the transaction hash that produced it",
+      "Detection rules are pure functions of public chain state",
+      "Findings are deduplicated by content fingerprint in SQLite",
+      "Verifying any claim requires only devnet-api.multiversx.com"
+    ]
+  },
+
+  "oasf": {
+    "skills": ["quantitative_analysis", "anomaly_detection"],
+    "domains": ["defi_security", "agent_integrity"]
+  },
+
   "metadata": [
-    { "key": "version", "value": "0.1.0-devnet" },
+    { "key": "version", "value": "1.0.0" },
     { "key": "operator", "value": "Armand (Musashi Warrior)" },
     { "key": "repo", "value": "github.com/chiefofstafflara/fraud-monitor-agent" },
-    { "key": "grant", "value": "MultiversX Growth Games — Build Tier" },
     { "key": "network", "value": "devnet" },
     { "key": "oasf:skill:0", "value": "quantitative_analysis" },
-    { "key": "oasf:domain:0", "value": "defi_security" }
+    { "key": "oasf:skill:1", "value": "anomaly_detection" },
+    { "key": "oasf:domain:0", "value": "defi_security" },
+    { "key": "oasf:domain:1", "value": "agent_integrity" }
   ]
 }

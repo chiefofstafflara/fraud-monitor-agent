@@ -1,0 +1,44 @@
+services:
+  c3po:
+    build:
+      context: .
+      dockerfile: Dockerfile.agent
+    image: c3po-gateway
+    container_name: hermes-gateway-c3po
+    restart: unless-stopped
+    networks:
+      - hermes-network
+
+    volumes:
+      - c3po-home:/home/c3po
+      - /home/ubuntu/.hermes/hermes-agent:/opt/hermes-agent:ro
+      - /home/shared/obsidian-vault:/home/shared/obsidian-vault:ro
+      - /home/ubuntu/ops-logs:/home/ubuntu/ops-logs
+      - /home/ubuntu/armand-hermes-infrastructure:/home/ubuntu/armand-hermes-infrastructure
+
+    environment:
+      - HERMES_HOME=/home/c3po/.hermes
+      - PLATFORM=telegram
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_ALLOWED_CHATS=${TELEGRAM_ALLOWED_CHATS}
+      - PYTHONPATH=/opt/hermes-agent
+
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+volumes:
+  c3po-home:
+  ops-logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ubuntu/ops-logs
+
+networks:
+  hermes-network:
+    driver: bridge

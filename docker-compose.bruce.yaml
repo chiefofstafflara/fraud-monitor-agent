@@ -13,7 +13,7 @@ services:
     volumes:
       - bruce-home:/home/bruce
       - /home/ubuntu/.hermes/hermes-agent:/opt/hermes-agent:ro
-      - /home/shared/obsidian-vault:/home/shared/obsidian-vault:ro
+      - /home/shared/obsidian-vault:/home/shared/obsidian-vault:rw
       - /home/ubuntu/ops-logs:/home/ubuntu/ops-logs
 
     # Environment variables

@@ -1,0 +1,18 @@
+FROM python:3.11-slim
+
+RUN useradd -m -u 1003 agent
+
+RUN apt-get update && apt-get install -y curl git g++ && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir     pyyaml     requests     httpx     pydantic     pydantic-settings     rich     click     prompt-toolkit     aiohttp     websockets     python-dotenv     jinja2     markdown     platformdirs     filelock     hnswlib     numpy
+
+ENV HERMES_HOME=/home/agent/.hermes
+ENV PYTHONPATH=/opt/hermes-agent
+ENV PATH=/opt/hermes-agent/venv/bin:/usr/local/bin:/usr/bin:/bin
+
+USER agent
+WORKDIR /home/agent
+
+COPY --chmod=0755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

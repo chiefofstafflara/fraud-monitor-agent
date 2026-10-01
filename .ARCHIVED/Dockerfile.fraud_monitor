@@ -1,0 +1,36 @@
+FROM python:3.11-slim
+
+RUN useradd -m -u 1003 fraud_monitor
+
+RUN apt-get update && apt-get install -y curl git g++ && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies that Hermes needs
+RUN pip install --no-cache-dir \
+    pyyaml \
+    requests \
+    httpx \
+    pydantic \
+    pydantic-settings \
+    rich \
+    click \
+    prompt-toolkit \
+    aiohttp \
+    websockets \
+    python-dotenv \
+    jinja2 \
+    markdown \
+    platformdirs \
+    filelock \
+    hnswlib \
+    numpy
+
+ENV HERMES_HOME=/home/fraud_monitor/.hermes
+ENV PYTHONPATH=/opt/hermes-fraud_monitor
+ENV PATH=/opt/hermes-fraud_monitor/venv/bin:/usr/local/bin:/usr/bin:/bin
+
+USER fraud_monitor
+WORKDIR /home/fraud_monitor
+
+COPY --chmod=0755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

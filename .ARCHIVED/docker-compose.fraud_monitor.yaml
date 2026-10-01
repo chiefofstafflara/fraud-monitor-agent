@@ -1,0 +1,43 @@
+services:
+  fraud_monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile.fraud_monitor
+    image: fraud-monitor-gateway
+    container_name: hermes-gateway-fraud-monitor
+    restart: unless-stopped
+    networks:
+      - hermes-network
+
+    volumes:
+      - fraud-monitor-home:/home/fraud_monitor
+      - /home/ubuntu/.hermes/hermes-agent:/opt/hermes-agent:ro
+      - /home/shared/obsidian-vault:/home/shared/obsidian-vault:rw
+      - /home/ubuntu/ops-logs:/home/ubuntu/ops-logs
+
+    environment:
+      - HERMES_HOME=/home/fraud_monitor/.hermes
+      - PLATFORM=telegram
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_ALLOWED_CHATS=${TELEGRAM_ALLOWED_CHATS}
+      - PYTHONPATH=/opt/hermes-agent
+
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+volumes:
+  fraud-monitor-home:
+  ops-logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ubuntu/ops-logs
+
+networks:
+  hermes-network:
+    driver: bridge
