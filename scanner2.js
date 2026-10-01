@@ -274,12 +274,18 @@ tick();setInterval(tick,15000);
 
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
+  // Behind a reverse proxy at a path prefix (e.g. /monitor), strip it so the
+  // same build works at both / and /monitor.
+  const PREFIX = '/monitor';
+  let path = url.pathname;
+  if (path === PREFIX) path = '/';
+  else if (path.startsWith(PREFIX + '/')) path = path.slice(PREFIX.length);
   const json = (o, code = 200) => {
     res.writeHead(code, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
     res.end(JSON.stringify(o));
   };
-  if (url.pathname === '/api/stats') return json(stats());
-  if (url.pathname === '/api/findings') {
+  if (path === '/api/stats') return json(stats());
+  if (path === '/api/findings') {
     const limit = Math.min(Number(url.searchParams.get('limit') || 50), 200);
     const rule = url.searchParams.get('rule');
     const rows = rule
@@ -287,9 +293,9 @@ const server = http.createServer((req, res) => {
       : db.prepare('SELECT * FROM findings ORDER BY last_seen DESC LIMIT ?').all(limit);
     return json({ findings: rows });
   }
-  if (url.pathname === '/api/scan') return json({ triggered: true, ...stats() });
-  if (url.pathname === '/health') return json({ ok: true, uptime_s: Math.floor(process.uptime()) });
-  if (url.pathname === '/') {
+  if (path === '/api/scan') return json({ triggered: true, ...stats() });
+  if (path === '/health') return json({ ok: true, uptime_s: Math.floor(process.uptime()) });
+  if (path === '/') {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     return res.end(DASH);
   }
