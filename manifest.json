@@ -20,8 +20,8 @@
   "endpoints": [
     {
       "name": "findings-api",
-      "description": "JSON API. GET /api/stats, /api/findings?limit=&rule=, /health",
-      "url": "https://api.fraudalysis.com/agents/200/stats",
+      "description": "Live findings feed. GET /results/data.json (public, no auth) — findings totals, scan cadence and lastScan. Authenticated detail API at /api/stats and /api/findings (requires X-API-Key).",
+      "url": "https://fraudalysis.com/results/data.json",
       "type": "http"
     }
   ],
