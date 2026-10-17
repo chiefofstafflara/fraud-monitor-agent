@@ -4,7 +4,30 @@ RUN useradd -m -u 1003 agent
 
 RUN apt-get update && apt-get install -y curl git g++ && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir     pyyaml     requests     httpx     pydantic     pydantic-settings     rich     click     prompt-toolkit     aiohttp     websockets     python-dotenv     jinja2     markdown     platformdirs     filelock     hnswlib     numpy
+# 2026-10-04 FIX: packages were previously installed at RUNTIME into
+# /home/agent/.local, which is destroyed on every `docker run`. Recreating any
+# agent container crashed the gateway with ModuleNotFoundError: psutil.
+# They are now baked in. Derived from the live package set of hermes-gateway-gordon.
+#
+# RUNTIME NOTE (2026-10-17): these packages are SHADOWED at runtime by the
+# Hermes-managed venv (Python 3.14, selected by docker-entrypoint.sh). The
+# managed venv supplies the real dependency closure and does NOT contain every
+# package listed below — edge-tts and boto3 are optional PM extras, enabled with
+# `hermes pm install --extra <name>`, not by this file. This list is a FALLBACK
+# so a container still works if the managed environment is missing or damaged.
+# Deployed sets are recorded in requirements/image-<tag>.txt.
+# Keep this list identical to Dockerfile.bruce.
+RUN pip install --no-cache-dir \
+      pyyaml requests httpx pydantic pydantic-settings rich click prompt-toolkit \
+      aiohttp websockets python-dotenv jinja2 markdown platformdirs filelock \
+      hnswlib numpy \
+      psutil boto3 python-telegram-bot edge-tts pillow pillow-heif openai \
+      tabulate tornado 'ruamel.yaml' jmespath s3transfer python-dateutil six \
+      sniffio truststore croniter
+
+# Locked test (documented, not run at build time):
+#   python3 -c "import psutil, telegram, edge_tts, boto3; print('deps ok')"
+# Expected output: deps ok
 
 ENV HERMES_HOME=/home/agent/.hermes
 ENV PYTHONPATH=/opt/hermes-agent

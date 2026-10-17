@@ -4,26 +4,24 @@ RUN useradd -m -u 1003 bruce
 
 RUN apt-get update && apt-get install -y curl git g++ && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies that Hermes needs
+# 2026-10-17: ALIGNED WITH Dockerfile.agent.
+# This list used to be a subset that had drifted badly from the agent image:
+# bruce's image was the only one missing psutil, python-telegram-bot, edge-tts,
+# boto3, truststore and ruamel.yaml. Keep the two lists identical from here on —
+# if you add a package to one, add it to the other.
+#
+# RUNTIME NOTE: at runtime these packages are SHADOWED by the Hermes-managed
+# venv (Python 3.14, selected by docker-entrypoint.sh), which supplies the real
+# dependency closure. This list is a fallback so a container still functions if
+# the managed environment is missing or damaged — it is NOT the primary runtime.
+# The exact deployed sets are recorded in requirements/image-<tag>.txt.
 RUN pip install --no-cache-dir \
-    pyyaml \
-    requests \
-    httpx \
-    pydantic \
-    pydantic-settings \
-    openai \
-    rich \
-    click \
-    prompt-toolkit \
-    aiohttp \
-    websockets \
-    python-dotenv \
-    jinja2 \
-    markdown \
-    platformdirs \
-    filelock \
-    hnswlib \
-    numpy
+      pyyaml requests httpx pydantic pydantic-settings rich click prompt-toolkit \
+      aiohttp websockets python-dotenv jinja2 markdown platformdirs filelock \
+      hnswlib numpy \
+      psutil boto3 python-telegram-bot edge-tts pillow pillow-heif openai \
+      tabulate tornado 'ruamel.yaml' jmespath s3transfer python-dateutil six \
+      sniffio truststore croniter
 
 ENV HERMES_HOME=/home/bruce/.hermes
 ENV PYTHONPATH=/opt/hermes-agent
